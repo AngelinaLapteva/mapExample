@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map 1</title>
+</head>
+<body>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    .map {
+      width:100%;
+      height:400px;
+    }
+  </style>
+
+  <div class="map"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuGVhrd89eBZXAuI1fIwjNlPi8u4b4lNs" type="text/javascript"></script>
+
+
+  <script>
+
+    var styles =[{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"color":"#000000"},{"lightness":13}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#144b53"},{"lightness":14},{"weight":1.4}]},{"featureType":"administrative.country","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"hue":"#00fff4"},{"lightness":"-47"},{"gamma":"1.76"},{"saturation":"-34"}]},{"featureType":"administrative.province","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"administrative.province","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"labels.text.fill","stylers":[{"color":"#743434"},{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#08304b"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#0c4152"},{"lightness":5}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#0b434f"},{"lightness":25},{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#0b3d51"},{"lightness":16}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"}]},{"featureType":"transit","elementType":"all","stylers":[{"color":"#146474"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#071b28"},{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#0036ff"}]},{"featureType":"water","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#504a4a"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"water","elementType":"labels.text","stylers":[{"visibility":"on"},{"color":"#ff0000"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"visibility":"on"},{"color":"#e5dfae"},{"weight":"3.39"},{"saturation":"1"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"color":"#fdfdfd"},{"visibility":"on"}]},{"featureType":"water","elementType":"labels.icon","stylers":[{"visibility":"on"},{"color":"#ffffff"}]}]
+    var app = {};
+
+    app.loadMap = function() {
+      // 1. all the options for the google map are held in an object
+      var options = {
+        center:{
+          lat:43.6482289,
+          lng:-79.3980282
+        },
+        zoom: 8,
+        clickableIcons: false,
+        styles:styles
+      };
+      // 2. we also select the map div with jquery, but only the first item in the array
+      var mapDiv=$('.map')[0];
+      // 3. which we then pass to the map method and store
+      // we store our map in app.map so we can later reference it in other mapping functions
+      app.map = new google.maps.Map(mapDiv, options);
+
+    } // end app.loadMap definition
+
+    app.loadMarkers = function()
+    {
+      //create our first marker
+      var home = new google.maps.Marker({
+        position: { 
+        lat:43.6482289,
+        lng:-79.3980282
+       },// to which map we want to apply a marker
+       map: app.map,
+       icon : 'https://maps.google.com/mapfiles/kml/shapes/schools_maps.png'
+      });
+      var infoWindow = new google.maps.InfoWindow();
+      // this is google way to catch the click event
+      home.addListener('click', function(){
+        // can put not only hello but a video, pic and etc
+        infoWindow.setContent('hello');
+        infoWindow.open(app.map, this);
+      });
+    }
+// document ready
+    $(function() {
+      // 4. call load map when the document is ready
+      app.loadMap();
+      // load our markers on page load too
+      app.loadMarkers();
+      //app.addListener('idle')
+      // to get location and then send lat and lng into other function to 
+      // app.map.setCenter(lat, lng)
+
+    }); // end doc ready
+
+
+  </script>
+</body>
+</html>
